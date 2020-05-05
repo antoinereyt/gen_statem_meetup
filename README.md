@@ -1,8 +1,18 @@
 # Discover finite state machine with gen_statem
 
-This repo contains the code, tests and the Liveview demo app shown during the Erlang/ Elixir meetup on 05/05/2020.
+This repo is related to the Erlang/ Elixir meetup on 05/05/2020.
 
-There is also some reusable boilerplate (code & tests) to start playing with gen_statem.
+:pray: Organized by https://erlang-connection.eu | twitter: [@ErlangConnect](https://twitter.com/ErlangConnect)
+
+:tv: You can find the  slides [here](https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir) :point_down:.
+
+<a href="https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir" target="_blank"><img src="assets/static/slideshare-preview.png" width="350px" /></a>
+
+# Code, tests, and boilerplate
+
+This repo contains the code, the tests and the Liveview demo app shown during the meetup.
+
+There is also some **reusable boilerplate** (code & tests) to start playing with gen_statem.
 
 The boilerplates, lives in `lib/fsm/door` with their related tests in `test/fsm/door`.
 
