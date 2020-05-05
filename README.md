@@ -6,7 +6,7 @@ This repo is related to the Erlang/ Elixir meetup on 05/05/2020.
 
 :tv: You can find the  slides [here](https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir) :point_down:.
 
-<a href="https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir" target="_blank"><img src="assets/static/slideshare-preview.png" width="350px" /></a>
+<a href="https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir" target="_blank"><img src="assets/static/images/slideshare-preview.png" width="350px" /></a>
 
 # Code, tests, and boilerplate
 
