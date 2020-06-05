@@ -1,6 +1,10 @@
 /* This file is for your main application css. */
 @import "../node_modules/nprogress/nprogress.css";
 
+button, button:focus {
+  outline: 0;
+}
+
 /* LiveView specific classes for your customizations */
 .invalid-feedback {
   color: #a94442;
