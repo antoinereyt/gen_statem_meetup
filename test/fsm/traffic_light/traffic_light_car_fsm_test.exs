@@ -11,7 +11,7 @@ defmodule TrafficLight.CarFsmTest do
 
   alias TrafficLight.CarFsm, as: Fsm
 
-  @durations Application.get_env(:fsmlive, :traffic_light)[:durations]
+  defp durations, do: Application.get_env(:fsmlive, :traffic_light)[:durations]
 
   setup %{} do
     {:ok, pid} = Fsm.start_link(self())
@@ -32,7 +32,7 @@ defmodule TrafficLight.CarFsmTest do
       Fsm.turn_red(pid)
 
       assert {:orange, _} = :sys.get_state(pid)
-      refute_receive ^callback_message, @durations[:orange]
+      refute_receive ^callback_message, durations()[:orange]
 
       assert_receive ^callback_message
       assert {:red, _} = :sys.get_state(pid)
@@ -59,7 +59,7 @@ defmodule TrafficLight.CarFsmTest do
     :ok = Fsm.turn_red(pid)
 
     # wait it to be red
-    assert_receive ^callback_message, @durations[:orange] + 50
+    assert_receive ^callback_message, durations()[:orange] + 50
     assert {:red, _} = :sys.get_state(pid)
 
     :ok

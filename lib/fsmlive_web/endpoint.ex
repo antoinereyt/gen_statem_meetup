@@ -7,14 +7,13 @@ defmodule FsmliveWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_fsmlive_key",
-    signing_salt: "yv/k4c0O"
+    signing_salt: "KaAkj6VN",
+    same_site: "Lax"
   ]
 
-  socket "/socket", FsmliveWeb.UserSocket,
-    websocket: true,
-    longpoll: false
-
-  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
+  socket "/live", Phoenix.LiveView.Socket,
+    websocket: [connect_info: [session: @session_options]],
+    longpoll: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -24,7 +23,7 @@ defmodule FsmliveWeb.Endpoint do
     at: "/",
     from: :fsmlive,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: FsmliveWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

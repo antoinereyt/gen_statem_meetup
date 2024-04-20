@@ -1,0 +1,22 @@
+<div class="flex">
+  <%= for example <- @examples do %>
+    <div class="mx-4 w-64 max-w-sm rounded overflow-hidden shadow-lg">
+      <.link patch={example.route}>
+        <.card id={example.card_component.id} params={example.card_component.params} />
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2"><%= example.title %></div>
+          <p class="text-gray-700 text-base">
+            <%= example.description %>
+          </p>
+        </div>
+      </.link>
+      <div class="px-6 py-4">
+        <%= for tag <- example.tags do %>
+          <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+            #<%= tag %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

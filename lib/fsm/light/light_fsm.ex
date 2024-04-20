@@ -1,8 +1,8 @@
 defmodule Light.Fsm do
   @behaviour :gen_statem
 
-  @on_ttl Application.get_env(:fsmlive, :light)[:durations][:on_ttl]
-  @bulb Application.get_env(:fsmlive, :light)[:services][:bulb]
+  defp on_ttl, do: Application.get_env(:fsmlive, :light)[:durations][:on_ttl]
+  defp bulb, do: Application.get_env(:fsmlive, :light)[:services][:bulb]
 
   @type state :: :on | :off
   @initial_state :off
@@ -25,12 +25,12 @@ defmodule Light.Fsm do
   end
 
   def off(:cast, :turn_on, data) do
-    actions = [{:state_timeout, @on_ttl, :turn_on_ttl}]
+    actions = [{:state_timeout, on_ttl(), :turn_on_ttl}]
     {:next_state, :on, data, actions}
   end
 
   def off(:enter, _oldState, data) do
-    @bulb.off(data.bulb_pid)
+    bulb().off(data.bulb_pid)
     :keep_state_and_data
   end
 
@@ -48,7 +48,7 @@ defmodule Light.Fsm do
   end
 
   def on(:enter, _oldState, data) do
-    @bulb.on(data.bulb_pid)
+    bulb().on(data.bulb_pid)
     :keep_state_and_data
   end
 

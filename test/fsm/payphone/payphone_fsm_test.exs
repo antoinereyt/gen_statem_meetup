@@ -5,8 +5,8 @@ defmodule Payphone.FsmTest do
 
   alias Payphone.Fsm, as: Fsm
 
-  @credit_duration Application.get_env(:fsmlive, :payphone)[:credit_duration]
-  @warning_threshold Application.get_env(:fsmlive, :payphone)[:warning_threshold]
+  defp credit_duration, do: Application.get_env(:fsmlive, :payphone)[:credit_duration]
+  defp warning_threshold, do: Application.get_env(:fsmlive, :payphone)[:warning_threshold]
 
   setup %{} do
     {:ok, pid} = Fsm.start_link(self())
@@ -111,7 +111,7 @@ defmodule Payphone.FsmTest do
 
     test "Should hang_up automatically when user have no more credit", %{pid: pid} do
       assert {:on_call, %{credit: credit}} = :sys.get_state(pid)
-      :timer.sleep(credit * @credit_duration)
+      :timer.sleep(credit * credit_duration())
       assert {:idle, _} = :sys.get_state(pid)
     end
 
@@ -120,19 +120,19 @@ defmodule Payphone.FsmTest do
       Fsm.pick_up(pid)
 
       Fsm.add_credit(pid, 2)
-      Fsm.add_credit(pid, trunc(@warning_threshold / @credit_duration))
+      Fsm.add_credit(pid, trunc(warning_threshold() / credit_duration()))
       # now we have a total of 2 + warning_threshold credits
 
       # After one credit duration, I add one more credit
       spawn(fn ->
-        :timer.sleep(@credit_duration)
+        :timer.sleep(credit_duration())
         Fsm.add_credit(pid, 1)
       end)
 
       Fsm.dial(pid)
 
       # At the end I had been able to call for 3 credit time without any warning signal
-      refute_receive {:hardware_mock, ^pid, :screen, :warning_low_credit}, 3 * @credit_duration
+      refute_receive {:hardware_mock, ^pid, :screen, :warning_low_credit}, 3 * credit_duration()
       assert_receive {:hardware_mock, ^pid, :screen, :warning_low_credit}, 50
     end
 
@@ -146,14 +146,14 @@ defmodule Payphone.FsmTest do
 
       # After one credit duration, I add one more credit
       spawn(fn ->
-        :timer.sleep(@credit_duration)
+        :timer.sleep(credit_duration())
         Fsm.add_credit(pid, 1)
       end)
 
       Fsm.dial(pid)
 
       # At the end I had been able to call for my total 3 credit time.
-      refute_receive {:hardware_mock, ^pid, :state, :idle}, 3 * @credit_duration
+      refute_receive {:hardware_mock, ^pid, :state, :idle}, 3 * credit_duration()
       assert_receive {:hardware_mock, ^pid, :state, :idle}, 50
     end
 
@@ -164,16 +164,16 @@ defmodule Payphone.FsmTest do
       Fsm.dial(pid)
 
       # sleep for 1 credit
-      :timer.sleep(1 * @credit_duration)
+      :timer.sleep(1 * credit_duration())
       assert {:on_call, _} = :sys.get_state(pid)
 
       Fsm.add_credit(pid)
 
       # wait for the two last credits: the one remaning, plus the new added.
-      :timer.sleep(2 * @credit_duration - trunc(@credit_duration / 2))
+      :timer.sleep(2 * credit_duration() - trunc(credit_duration() / 2))
       assert {:on_call, _} = :sys.get_state(pid)
 
-      :timer.sleep(trunc(@credit_duration / 2))
+      :timer.sleep(trunc(credit_duration() / 2))
       assert {:idle, _} = :sys.get_state(pid)
     end
 
@@ -181,13 +181,13 @@ defmodule Payphone.FsmTest do
       {:ok, pid} = Fsm.start_link(self())
       Fsm.pick_up(pid)
       Fsm.add_credit(pid, 1)
-      Fsm.add_credit(pid, trunc(@warning_threshold / @credit_duration))
+      Fsm.add_credit(pid, trunc(warning_threshold() / credit_duration()))
       # now we have a total of 1 + warning_threshold credits
 
       Fsm.dial(pid)
 
       message = {:hardware_mock, pid, :screen, :warning_low_credit}
-      refute_receive ^message, 1 * @credit_duration
+      refute_receive ^message, 1 * credit_duration()
       assert_receive ^message, 50
     end
 
@@ -195,15 +195,15 @@ defmodule Payphone.FsmTest do
       {:ok, pid} = Fsm.start_link(self())
       Fsm.pick_up(pid)
       Fsm.add_credit(pid, 2)
-      Fsm.add_credit(pid, trunc(@warning_threshold / @credit_duration))
+      Fsm.add_credit(pid, trunc(warning_threshold() / credit_duration()))
       {_, %{credit: total_credit}} = :sys.get_state(pid)
       # now we have a total of 2 + warning_threshold credits
 
       Fsm.dial(pid)
 
-      refute_receive {:screen, ^pid, :warning_low_credit}, 1 * @credit_duration
+      refute_receive {:screen, ^pid, :warning_low_credit}, 1 * credit_duration()
       Fsm.hang_up(pid)
-      refute_receive {:screen, ^pid, :warning_low_credit}, total_credit * @credit_duration
+      refute_receive {:screen, ^pid, :warning_low_credit}, total_credit * credit_duration()
     end
   end
 

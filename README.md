@@ -6,7 +6,7 @@ This repo is related to the Erlang/ Elixir meetup on 05/05/2020.
 
 :tv: You can find the  slides [here](https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir) :point_down:.
 
-<a href="https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir" target="_blank"><img src="assets/static/images/slideshare-preview.png" width="350px" /></a>
+<a href="https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir" target="_blank"><img src="priv/doc/imgs/slideshare-preview.png" width="350px" /></a>
 
 # Code, tests, and boilerplate
 
@@ -25,13 +25,13 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-<img src="assets/static/doc/examples.gif">
+<img src="priv/doc/examples.gif">
 
 ## Demo 1: Light
 
 code: [lib/fsm/light/light_fsm.ex](lib/fsm/light/light_fsm.ex) | tests: [test/fsm/light/light_fsm_test.exs](test/fsm/light/light_fsm_test.exs)
 
-<img src="assets/static/doc/imgs/example-light.png">
+<img src="priv/doc/imgs/example-light.png">
 
 ### Rules
 
@@ -51,7 +51,7 @@ code: [lib/fsm/light/light_fsm.ex](lib/fsm/light/light_fsm.ex) | tests: [test/fs
 
 code: [lib/fsm/payphone/payphone_fsm.ex](lib/fsm/payphone/payphone_fsm.ex) | tests: [test/fsm/payphone/payphone_fsm_test.exs](test/fsm/payphone/payphone_fsm_test.exs)
 
-<img src="assets/static/doc/imgs/example-payphone.png">
+<img src="priv/doc/imgs/example-payphone.png">
 
 ### Sequence:
 
@@ -86,15 +86,15 @@ code: [lib/fsm/traffic_light/traffic_light_manager_fsm.ex](lib/fsm/traffic_light
 
 TrafficLight.PeopleFsm:
 
-<img src="assets/static/doc/imgs/example-traffic-light-people.png" width="30%">
+<img src="priv/doc/imgs/example-traffic-light-people.png" width="30%">
 
 TrafficLight.CarFsm:
 
-<img src="assets/static/doc/imgs/example-traffic-light-car.png" width="30%">
+<img src="priv/doc/imgs/example-traffic-light-car.png" width="30%">
 
 TrafficLight.ManagerFsm (the one that manage the two others):
 
-<img src="assets/static/doc/imgs/example-traffic-light-manager.png">
+<img src="priv/doc/imgs/example-traffic-light-manager.png">
 
 ### Goal:
 Crossing the road.

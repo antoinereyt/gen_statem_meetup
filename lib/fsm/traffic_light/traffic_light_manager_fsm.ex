@@ -4,7 +4,7 @@ defmodule TrafficLight.ManagerFsm do
   @type state :: :car_pass | :waiting_all_stop | :all_stop | :people_pass
   @initial_state :car_pass
 
-  @durations Application.get_env(:fsmlive, :traffic_light)[:durations]
+  defp durations, do: Application.get_env(:fsmlive, :traffic_light)[:durations]
 
   alias TrafficLight.CarFsm, as: CarFsm
   alias TrafficLight.PeopleFsm, as: PeopleFsm
@@ -24,14 +24,14 @@ defmodule TrafficLight.ManagerFsm do
 
   # state waiting_all_stop
   def handle_event(:info, {:callback, _car_fsm_pid, :red}, :waiting_all_stop, data) do
-    actions = [{:state_timeout, @durations[:all_stop], :before_people_pass}]
+    actions = [{:state_timeout, durations()[:all_stop], :before_people_pass}]
     {:next_state, :all_stop, data, actions}
   end
 
   # state all_stop
   def handle_event(:state_timeout, :before_people_pass, :all_stop, data) do
     :ok = PeopleFsm.turn_green(data.people_pid)
-    actions = [{:state_timeout, @durations[:people_pass], nil}]
+    actions = [{:state_timeout, durations()[:people_pass], nil}]
     {:next_state, :people_pass, data, actions}
   end
 
@@ -43,7 +43,7 @@ defmodule TrafficLight.ManagerFsm do
   # state people_pass
   def handle_event(:state_timeout, _, :people_pass, data) do
     :ok = PeopleFsm.turn_red(data.people_pid)
-    actions = [{:state_timeout, @durations[:all_stop], :back_to_start}]
+    actions = [{:state_timeout, durations()[:all_stop], :back_to_start}]
     {:next_state, :all_stop, data, actions}
   end
 

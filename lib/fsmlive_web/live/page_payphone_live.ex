@@ -3,10 +3,13 @@ defmodule FsmliveWeb.PagePayphoneLive do
 
   use FsmliveWeb, :live_view
 
-  alias Payphone.Fsm, as: Fsm
+  alias Payphone.Fsm, as: PayphoneFsm
+
+  alias FsmliveWeb.Components.Fsm
+  alias FsmliveWeb.Components.Payphone
 
   def mount(_params, _session, socket) do
-    {:ok, pid} = Fsm.start_link(self())
+    {:ok, pid} = PayphoneFsm.start_link(self())
     {state, _} = :sys.get_state(pid)
     :sys.trace(pid, true)
 
@@ -15,25 +18,25 @@ defmodule FsmliveWeb.PagePayphoneLive do
 
   def handle_event("pick_up", _, socket) do
     pid = socket.assigns.pid
-    Fsm.pick_up(pid)
+    PayphoneFsm.pick_up(pid)
     {:noreply, socket}
   end
 
   def handle_event("hang_up", _, socket) do
     pid = socket.assigns.pid
-    Fsm.hang_up(pid)
+    PayphoneFsm.hang_up(pid)
     {:noreply, socket}
   end
 
   def handle_event("dial", _, socket) do
     pid = socket.assigns.pid
-    Fsm.dial(pid)
+    PayphoneFsm.dial(pid)
     {:noreply, socket}
   end
 
   def handle_event("add_credit", _, socket) do
     pid = socket.assigns.pid
-    Fsm.add_credit(pid)
+    PayphoneFsm.add_credit(pid)
     {:noreply, socket}
   end
 

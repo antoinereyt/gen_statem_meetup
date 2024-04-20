@@ -13,7 +13,7 @@ defmodule TrafficLight.ManagerFsmTest do
   alias TrafficLight.PeopleFsm, as: PeopleFsm
   alias TrafficLight.ManagerFsm, as: ManagerFsm
 
-  @durations Application.get_env(:fsmlive, :traffic_light)[:durations]
+  defp durations, do: Application.get_env(:fsmlive, :traffic_light)[:durations]
 
   setup %{} do
     {:ok, car_pid} = CarFsm.start_link(self())
@@ -35,16 +35,16 @@ defmodule TrafficLight.ManagerFsmTest do
     ManagerFsm.cross(manager)
     assert {:waiting_all_stop, _} = :sys.get_state(manager)
 
-    :timer.sleep(@durations[:orange] + 10)
+    :timer.sleep(durations()[:orange] + 10)
     assert {:all_stop, _} = :sys.get_state(manager)
 
-    :timer.sleep(@durations[:all_stop] + 10)
+    :timer.sleep(durations()[:all_stop] + 10)
     assert {:people_pass, _} = :sys.get_state(manager)
 
-    :timer.sleep(@durations[:people_pass] + 10)
+    :timer.sleep(durations()[:people_pass] + 10)
     assert {:all_stop, _} = :sys.get_state(manager)
 
-    :timer.sleep(@durations[:all_stop] + 10)
+    :timer.sleep(durations()[:all_stop] + 10)
     assert {:car_pass, _} = :sys.get_state(manager)
   end
 

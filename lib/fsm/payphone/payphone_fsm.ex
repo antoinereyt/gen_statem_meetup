@@ -2,15 +2,17 @@ defmodule Payphone.Fsm do
   @behaviour :gen_statem
 
   @type state :: :idle | :waiting_credit | :waiting_dial | :on_call
-  @credit_duration Application.get_env(:fsmlive, :payphone)[:credit_duration]
+  defp credit_duration, do: Application.get_env(:fsmlive, :payphone)[:credit_duration]
   @initial_state :idle
-  @initial_data %{
-    credit: 0,
-    call_started_at: nil,
-    hardware_pid: nil,
-    warning_threshold: Application.get_env(:fsmlive, :payphone)[:warning_threshold]
-  }
-  @hardware Application.get_env(:fsmlive, :payphone)[:services][:hardware]
+  defp initial_data(),
+    do: %{
+      credit: 0,
+      call_started_at: nil,
+      hardware_pid: nil,
+      warning_threshold: Application.get_env(:fsmlive, :payphone)[:warning_threshold]
+    }
+
+  defp hardware, do: Application.get_env(:fsmlive, :payphone)[:services][:hardware]
   # public api
 
   def pick_up(pid) do
@@ -52,7 +54,7 @@ defmodule Payphone.Fsm do
   def handle_event({:call, form}, {:add_credit, credit}, :on_call, data) do
     new_data = %{data | credit: data.credit + credit}
 
-    @hardware.exec(data.hardware_pid, :screen, :clear)
+    hardware().exec(data.hardware_pid, :screen, :clear)
 
     actions = [
       {:reply, form, :ok},
@@ -85,7 +87,7 @@ defmodule Payphone.Fsm do
   # on_call state
   def handle_event(:state_timeout, _, :on_call, data) do
     new_data = reset_data(data)
-    @hardware.exec(data.hardware_pid, :screen, :clear)
+    hardware().exec(data.hardware_pid, :screen, :clear)
 
     {:next_state, :idle, new_data}
   end
@@ -100,7 +102,7 @@ defmodule Payphone.Fsm do
 
     new_data = reset_data(data)
 
-    @hardware.exec(data.hardware_pid, :screen, :clear)
+    hardware().exec(data.hardware_pid, :screen, :clear)
 
     {:next_state, :idle, new_data, actions}
   end
@@ -112,24 +114,24 @@ defmodule Payphone.Fsm do
   end
 
   def handle_event(:enter, _oldState, state, data) do
-    @hardware.exec(data.hardware_pid, :state, state)
+    hardware().exec(data.hardware_pid, :state, state)
 
     :keep_state_and_data
   end
 
   # def handle_event({:timeout, :warning_low_credit}, nil, :on_call, data) do
   def handle_event({:timeout, :warning_low_credit}, nil, _state, data) do
-    @hardware.exec(data.hardware_pid, :screen, :warning_low_credit)
+    hardware().exec(data.hardware_pid, :screen, :warning_low_credit)
     :keep_state_and_data
   end
 
   # helpers
   defp reset_data(data) do
-    Map.merge(@initial_data, %{hardware_pid: data.hardware_pid})
+    Map.merge(initial_data(), %{hardware_pid: data.hardware_pid})
   end
 
   defp credit_to_time(credit) do
-    credit * @credit_duration
+    credit * credit_duration()
   end
 
   defp no_more_credit_timeout(data) do
@@ -152,7 +154,7 @@ defmodule Payphone.Fsm do
   end
 
   def init(hardware_pid) do
-    data = %{@initial_data | hardware_pid: hardware_pid}
+    data = %{initial_data() | hardware_pid: hardware_pid}
     {:ok, @initial_state, data}
   end
 

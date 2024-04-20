@@ -1,0 +1,40 @@
+<h1 class="text-lg font-bold text-gray-800">Traffic Light FSM</h1>
+
+<Fsm.playground image={~p"/images/fsm/traffic-light-people.svg"}>
+  <:animation>
+    <TrafficLight.people_playground state={@standalone_people.state} />
+  </:animation>
+  <:infos>
+    <Fsm.info label="pid:" value={inspect(@standalone_people.pid)} />
+    <Fsm.info label="state:" value={@standalone_people.state} />
+  </:infos>
+</Fsm.playground>
+
+<Fsm.playground image={~p"/images/fsm/traffic-light-people.svg"}>
+  <:animation>
+    <TrafficLight.car_playground state={@standalone_car.state} />
+  </:animation>
+  <:infos>
+    <Fsm.info label="state:" value={@standalone_car.state} />
+  </:infos>
+</Fsm.playground>
+
+<Fsm.playground image={~p"/images/fsm/traffic-light-manager.svg"}>
+  <:animation>
+    <TrafficLight.manager_playground car_color={@car.state} people_color={@people.state} />
+  </:animation>
+  <:infos>
+    <div class="flex">
+      <div>
+        <Fsm.info label="car_pid:" value={inspect(@car.pid)} />
+        <Fsm.info label="people_pid:" value={inspect(@people.pid)} />
+        <Fsm.info label="manager_pid:" value={inspect(@manager.pid)} />
+      </div>
+      <div class="ml-8">
+        <Fsm.info label="car_state:" value={@car.state} />
+        <Fsm.info label="people_state:" value={@people.state} />
+        <Fsm.info label="manager_state:" value={@manager.state} />
+      </div>
+    </div>
+  </:infos>
+</Fsm.playground>

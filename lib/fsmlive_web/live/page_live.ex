@@ -6,13 +6,44 @@ defmodule FsmliveWeb.PageLive do
     {:ok, assign(socket, examples: examples())}
   end
 
+  def card(%{id: :light} = assigns) do
+    assigns =
+      assigns
+      |> assign(:state, assigns.params.state)
+
+    ~H"""
+    <FsmliveWeb.Components.Light.card state={@state} />
+    """
+  end
+
+  def card(%{id: :payphone} = assigns) do
+    assigns =
+      assigns
+      |> assign(:state, assigns.params.state)
+      |> assign(:screen, assigns.params.screen)
+
+    ~H"""
+    <FsmliveWeb.Components.Payphone.card state={@state} screen={@screen} />
+    """
+  end
+
+  def card(%{id: :traffic_light} = assigns) do
+    assigns =
+      assigns
+      |> assign(:state, assigns.params.state)
+
+    ~H"""
+    <FsmliveWeb.Components.TrafficLight.card state={@state} />
+    """
+  end
+
   def examples() do
     [
       %{
         title: "Light",
         description: "Simple FSM to grasp the basic concepts and the syntax.",
         card_component: %{
-          name: FsmliveWeb.Component.LightCard,
+          id: :light,
           params: %{state: :on}
         },
         route: "/light",
@@ -24,7 +55,7 @@ defmodule FsmliveWeb.PageLive do
         description:
           "Introduce the handle_function syntax and learn about generic_timeout using absolute time.",
         card_component: %{
-          name: FsmliveWeb.Component.PayphoneCard,
+          id: :payphone,
           params: %{state: :idle, screen: :clear}
         },
         route: "/payphone",
@@ -36,7 +67,7 @@ defmodule FsmliveWeb.PageLive do
         description:
           "Synchronize two FSMs and discover the power of postpone and internal_event when used together.",
         card_component: %{
-          name: FsmliveWeb.Component.TrafficLightCard,
+          id: :traffic_light,
           params: %{state: "on"}
         },
         route: "/traffic-light",

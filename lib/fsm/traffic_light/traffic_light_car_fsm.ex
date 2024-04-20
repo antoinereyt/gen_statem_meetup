@@ -4,7 +4,7 @@ defmodule TrafficLight.CarFsm do
   @type state :: :red | :orange | :green
   @initial_state :green
 
-  @hardware Application.get_env(:fsmlive, :traffic_light)[:services][:hardware]
+  defp hardware, do: Application.get_env(:fsmlive, :traffic_light)[:services][:hardware]
 
   # public api
   def turn_red(pid) do
@@ -73,7 +73,7 @@ defmodule TrafficLight.CarFsm do
 
   @impl :gen_statem
   def handle_event(:enter, _oldState, state, data) do
-    @hardware.only_one_ligth_on(data.hardware_pid, self(), state)
+    hardware().only_one_ligth_on(data.hardware_pid, self(), state)
 
     :keep_state_and_data
   end

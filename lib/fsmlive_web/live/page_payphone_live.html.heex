@@ -1,0 +1,11 @@
+<h1 class="text-lg font-bold text-gray-800">Payphone FSM</h1>
+
+<Fsm.playground image={~p"/images/fsm/payphone.svg"}>
+  <:animation>
+    <Payphone.playground state={@state} screen={@screen} />
+  </:animation>
+  <:infos>
+    <Fsm.info label="pid:" value={inspect(@pid)} />
+    <Fsm.info label="state:" value={@state} />
+  </:infos>
+</Fsm.playground>

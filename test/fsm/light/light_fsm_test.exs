@@ -11,7 +11,7 @@ defmodule Light.FsmTest do
 
   alias Light.Fsm, as: Fsm
 
-  @on_ttl Application.get_env(:fsmlive, :light)[:durations][:on_ttl]
+  defp on_ttl, do: Application.get_env(:fsmlive, :light)[:durations][:on_ttl]
 
   setup %{} do
     bulb_pid = self()
@@ -52,7 +52,7 @@ defmodule Light.FsmTest do
     end
 
     test "Should turn it-self to state off after a given time", %{pid: pid} do
-      :timer.sleep(@on_ttl + 10)
+      :timer.sleep(on_ttl() + 10)
       assert {:off, _} = :sys.get_state(pid)
     end
   end
