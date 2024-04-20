@@ -22,3 +22,33 @@ config :phoenix, :plug_init_mode, :runtime
 config :phoenix_live_view,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
+
+config :fsmlive,
+  light: [
+    # duration in ms
+    durations: [
+      on_ttl: 200
+    ],
+    services: [
+      bulb: Light.BulbMock
+    ]
+  ],
+  payphone: [
+    # one credit duration in ms
+    credit_duration: 100,
+    warning_threshold: 300,
+    services: [
+      hardware: Payphone.Hardware.Test
+    ]
+  ],
+  traffic_light: [
+    services: [
+      hardware: TrafficLight.HardwareMock
+    ],
+    # durations in ms
+    durations: [
+      orange: 200,
+      people_pass: 300,
+      all_stop: 200
+    ]
+  ]

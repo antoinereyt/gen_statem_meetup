@@ -60,6 +60,36 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :fsmlive,
+  light: [
+    # duration in ms
+    durations: [
+      on_ttl: 3_000
+    ],
+    services: [
+      bulb: Light.Bulb.Liveview
+    ]
+  ],
+  payphone: [
+    # one credit duration in ms
+    credit_duration: 1_000,
+    warning_threshold: 3_000,
+    services: [
+      hardware: Payphone.Hardware.Liveview
+    ]
+  ],
+  traffic_light: [
+    services: [
+      hardware: TrafficLight.Hardware.Liveview
+    ],
+    # durations in ms
+    durations: [
+      orange: 1_000,
+      people_pass: 3000,
+      all_stop: 2000
+    ]
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
