@@ -1,29 +1,11 @@
 <h1 class="text-lg font-bold text-gray-800">Payphone FSM</h1>
 
-<div class="flex mt-4">
-  <div class="flex flex-col shadow">
-    <div class="flex">
-      <div style="min-width: 400px" class="flex items-center justify-center bg-gray-100 p-4">
-        <img src={~p"/images/fsm/payphone.svg"} />
-      </div>
-      <div class="flex">
-        <.live_component
-          id="payphone_playground"
-          module={FsmliveWeb.Component.PayphonePlayground}
-          state={@state}
-          screen={@screen}
-        />
-      </div>
-    </div>
-    <div class="bg-gray-200 text-xs p-1 font-mono">
-      <div>
-        <span class="font-semibold">pid: </span>
-        <span class="font-thin"><%= inspect(@pid) %></span>
-      </div>
-      <div>
-        <span class="font-semibold">state: </span>
-        <span class="font-thin"><%= @state %></span>
-      </div>
-    </div>
-  </div>
-</div>
+<Fsm.playground image={~p"/images/fsm/payphone.svg"}>
+  <:animation>
+    <Payphone.playground state={@state} screen={@screen} />
+  </:animation>
+  <:infos>
+    <Fsm.info label="pid:" value={inspect(@pid)} />
+    <Fsm.info label="state:" value={@state} />
+  </:infos>
+</Fsm.playground>

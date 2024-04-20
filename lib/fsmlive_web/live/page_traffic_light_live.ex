@@ -1,22 +1,29 @@
 defmodule FsmliveWeb.PageTrafficLightLive do
   use FsmliveWeb, :live_view
 
+  alias TrafficLight.CarFsm
+  alias TrafficLight.PeopleFsm
+  alias TrafficLight.ManagerFsm
+
+  alias FsmliveWeb.Components.Fsm
+  alias FsmliveWeb.Components.TrafficLight
+
   require Logger
 
   def mount(_params, _session, socket) do
-    {:ok, standalone_car_pid} = TrafficLight.CarFsm.start_link(self())
+    {:ok, standalone_car_pid} = CarFsm.start_link(self())
     {standalone_car_state, _} = :sys.get_state(standalone_car_pid)
     :sys.trace(standalone_car_pid, true)
 
-    {:ok, standalone_people_pid} = TrafficLight.PeopleFsm.start_link(self())
+    {:ok, standalone_people_pid} = PeopleFsm.start_link(self())
     {standalone_people_state, _} = :sys.get_state(standalone_people_pid)
     :sys.trace(standalone_people_pid, true)
 
-    {:ok, car_pid} = TrafficLight.CarFsm.start_link(self())
+    {:ok, car_pid} = CarFsm.start_link(self())
     {car_state, _} = :sys.get_state(car_pid)
-    {:ok, people_pid} = TrafficLight.PeopleFsm.start_link(self())
+    {:ok, people_pid} = PeopleFsm.start_link(self())
     {people_state, _} = :sys.get_state(people_pid)
-    {:ok, manager_pid} = TrafficLight.ManagerFsm.start_link(car_pid, people_pid, self())
+    {:ok, manager_pid} = ManagerFsm.start_link(car_pid, people_pid, self())
     {manager_state, _} = :sys.get_state(people_pid)
 
     :sys.trace(people_pid, true)
@@ -36,31 +43,31 @@ defmodule FsmliveWeb.PageTrafficLightLive do
 
   def handle_event("manager_cross", _, socket) do
     manager_pid = socket.assigns.manager.pid
-    TrafficLight.ManagerFsm.cross(manager_pid)
+    ManagerFsm.cross(manager_pid)
     {:noreply, socket}
   end
 
   def handle_event("people_turn_red", _, socket) do
     standalone_people_pid = socket.assigns.standalone_people.pid
-    TrafficLight.PeopleFsm.turn_red(standalone_people_pid)
+    PeopleFsm.turn_red(standalone_people_pid)
     {:noreply, socket}
   end
 
   def handle_event("people_turn_green", _, socket) do
     standalone_people_pid = socket.assigns.standalone_people.pid
-    TrafficLight.PeopleFsm.turn_green(standalone_people_pid)
+    PeopleFsm.turn_green(standalone_people_pid)
     {:noreply, socket}
   end
 
   def handle_event("car_turn_red", _, socket) do
     standalone_car_pid = socket.assigns.standalone_car.pid
-    TrafficLight.CarFsm.turn_red(standalone_car_pid)
+    CarFsm.turn_red(standalone_car_pid)
     {:noreply, socket}
   end
 
   def handle_event("car_turn_green", _, socket) do
     standalone_car_pid = socket.assigns.standalone_car.pid
-    TrafficLight.CarFsm.turn_green(standalone_car_pid)
+    CarFsm.turn_green(standalone_car_pid)
     {:noreply, socket}
   end
 

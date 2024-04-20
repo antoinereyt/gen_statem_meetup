@@ -1,10 +1,13 @@
 defmodule FsmliveWeb.PageLightLive do
   use FsmliveWeb, :live_view
 
-  alias Light.Fsm, as: Fsm
+  alias Light.Fsm, as: LightFsm
+
+  alias FsmliveWeb.Components.Fsm
+  alias FsmliveWeb.Components.Light
 
   def mount(_params, _session, socket) do
-    {:ok, pid} = Fsm.start_link(self())
+    {:ok, pid} = LightFsm.start_link(self())
     {state, _} = :sys.get_state(pid)
     :sys.trace(pid, true)
 
@@ -13,13 +16,13 @@ defmodule FsmliveWeb.PageLightLive do
 
   def handle_event("on", _, socket) do
     pid = socket.assigns.pid
-    Fsm.turn_on(pid)
+    LightFsm.turn_on(pid)
     {:noreply, socket}
   end
 
   def handle_event("off", _, socket) do
     pid = socket.assigns.pid
-    Fsm.turn_off(pid)
+    LightFsm.turn_off(pid)
     {:noreply, socket}
   end
 
