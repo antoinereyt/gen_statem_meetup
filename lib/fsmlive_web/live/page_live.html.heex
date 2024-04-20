@@ -1,0 +1,27 @@
+<div class="flex">
+  <%= for example <- @examples do %>
+    <div class="mx-4 w-64 max-w-sm rounded overflow-hidden shadow-lg">
+      <.live_component
+        id={example.card_component.name}
+        module={example.card_component.name}
+        state={example.card_component.params.state}
+        screen={example.card_component.params[:screen]}
+      />
+      <.link patch={example.route}>
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2"><%= example.title %></div>
+          <p class="text-gray-700 text-base">
+            <%= example.description %>
+          </p>
+        </div>
+      </.link>
+      <div class="px-6 py-4">
+        <%= for tag <- example.tags do %>
+          <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+            #<%= tag %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

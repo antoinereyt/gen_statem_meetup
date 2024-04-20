@@ -17,7 +17,10 @@ defmodule FsmliveWeb.Router do
   scope "/", FsmliveWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", PageLive, :index
+    live "/light", PageLightLive, :index
+    live "/payphone", PagePayphoneLive, :index
+    live "/traffic-light", PageTrafficLightLive, :index
   end
 
   # Other scopes may use custom stacks.
