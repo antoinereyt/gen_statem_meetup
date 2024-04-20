@@ -1,6 +1,6 @@
 <div class="flex">
   <%= for example <- @examples do %>
-    <div class="mx-4 w-64 max-w-sm rounded overflow-hidden shadow-lg">
+    <div class="mx-4 w-64 max-w-sm rounded overflow-hidden shadow-lg hover:scale-105">
       <.link patch={example.route}>
         <.card id={example.card_component.id} params={example.card_component.params} />
         <div class="px-6 py-4">
