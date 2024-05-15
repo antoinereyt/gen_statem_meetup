@@ -4,7 +4,7 @@ This repo is related to the Erlang/ Elixir meetup on 05/05/2020.
 
 :pray: Organized by https://erlang-connection.eu | twitter: [@ErlangConnect](https://twitter.com/ErlangConnect)
 
-:tv: You can find the  slides [here](https://www.slideshare.net/AntoineReyt/discover-finite-state-machines-with-genstatem-in-erlang-elixir) :point_down:.
+:tv: You can find the  slides [here](priv/doc/gen_statem.pdf) :point_down:.
 
 <a href="priv/doc/gen_statem.pdf" target="_blank"><img src="priv/doc/imgs/slideshare-preview.png" width="350px" /></a>
 
